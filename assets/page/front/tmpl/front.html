@@ -1,0 +1,86 @@
+<div>
+  <section 
+    class="container card mt-3 mb-3 fluid-container"
+    style="margin-left: 7vw; margin-right: 7vw; width: 86vw">
+    <div class="row small text-center" role="group">
+      <div class="pointer row-header col-1 pt-2 pb-2" v-on:click="app.sort('id')"> id </div>
+      <div class="pointer row-header col-2 pt-2 pb-2" v-on:click="app.sort('mean')"> overtime </div>
+      <div class="pointer row-header col-7 pt-2 pb-2" v-on:click="app.sort('word')"> words </div>
+      <div class="pointer row-header col-2 pt-2 pb-2" v-on:click="app.sort('prop')"> proportion </div>
+    </div>
+  </section>
+
+  <section
+    v-for="topic in topics"
+    class="container card pointer mt-4 mb-4"
+    style="margin-left: 7vw; margin-right: 7vw; width: 86vw">
+
+    <section class="row vertical-align topic-row">
+      <a
+        v-bind:href="topic.link"
+        class="d-block w-100 h-100 position-absolute"
+        style="z-index: 1"></a>
+      <div class="topic-id text-center col-lg-1 mt-4 mb-4">{{ topic.id }}</div>
+      <div class="topic-graph col-lg-2 mt-4 mb-4 text-center">
+        <img
+          v-bind:src="topic.graph"
+          v-bind:style="{
+            'min-height': '8em',
+            'max-height': '15em',
+            'min-width': '10em',
+          }"
+          class="img-thumbnail img-fluid"></img>
+      </div>
+      <div class='row col-lg-7 middle text-center m-0 mt-4 mb-4'>
+        <a
+          style="z-index: 2"
+          v-for="word in topic.word"
+          class="col-md-3 col-4 topic-word small"
+          v-bind:href="word.link">
+          {{ word.word }}
+        </a>
+      </div>
+      <div class="row col-lg-2 pl-0 pr-3 mb-3 mt-3">
+        <div class="topic-prop col-lg-6 col-3 small text-right mt-1"> {{ topic.prop }}% </div>
+        <div class="topic-bar col-lg-6 col-8 text-right pl-0 pr-0">
+          <div
+            v-bind:style="{ width: topic.rprop + '%' }"
+            class="topic-subbar align-middle"></div>
+        </div>
+      </div>
+    </section>
+  </section>
+  <br><br><br>
+  <section class="footer container-fluid jumbotron m-0 p-3 vertical-align text-center row">
+    <div class="d-block col-3">The British Hansard</div>
+    <div class="col-6 row">
+      <div v-on:click="app.first()" class="noselect col-2 hover d-none d-md-block"> &#8592; </div>
+      <div v-on:click="app.prev()"  class="noselect col-6 hover col-md-2"> prev&nbsp; </div>
+      <div v-on:click="app.prev()"  class="noselect col-2 d-none d-md-block"> {{ page }} </div>
+      <div v-on:click="app.next()"  class="noselect col-6 hover col-md-2"> &nbsp;next </div>
+      <div v-on:click="app.last()"  class="noselect col-2 hover d-none d-md-block" > &#8594; </div>
+    </div>
+    <div class="col-3">
+    <input
+      type="text"
+      id="search"
+      autocomplete="off"
+      class="form-control"
+      placeholder="search"
+      v-model="search"
+      @change="app.search()"
+      @input="app.search()"
+      @keypress="app.search()">
+    </div>
+  </section>
+
+  <div class="menu vertical-rl inline-block text-center"> 
+    <div class="header"> menu </div>
+    <span class="choice">
+      <a href="../front"> front </a> &nbsp; &nbsp;
+      <a href="../home"> home </a> &nbsp; &nbsp;
+      <a href="../map"> embedding </a> &nbsp; &nbsp;
+      <a href="../graph"> graph </a> &nbsp; &nbsp;
+    </span>
+  </div>
+</div>

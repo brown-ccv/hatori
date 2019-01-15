@@ -1,0 +1,30 @@
+{
+  "name": "topic",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "raw-loader": "^0.5.1",
+    "vue-loader": "^13.6.1",
+    "vue-template-compiler": "^2.5.13",
+    "vue-template-loader": "^0.3.1",
+    "webpack": "^3.10.0"
+  },
+  "dependencies": {
+    "babel-preset-es2015": "^6.24.1",
+    "billboard": "^1.0.0",
+    "billboard.js": "^1.6.2",
+    "browser-request": "^0.3.3",
+    "d3": "^4.12.2",
+    "lazyload": "^2.0.0-beta.2",
+    "navigo": "^6.0.1",
+    "node": "^11.3.0",
+    "vue": "^2.5.13"
+  }
+}

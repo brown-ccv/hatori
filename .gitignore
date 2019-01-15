@@ -1,0 +1,4 @@
+huge-data/*
+assets/node_modules/*
+.DS_Store
+serv/data/*
