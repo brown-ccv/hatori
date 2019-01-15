@@ -179,7 +179,7 @@ class Generator:
         }
 
 
-    def topics(self, topic_ids):
+    def topics(self, topic_ids, zval):
 
         # wilson score lower bound
         # of confidence interval
@@ -188,7 +188,7 @@ class Generator:
             #     return 0
             # else:
             #     return v/n
-            z = 100
+            z = zval
             p = v/n
             l = p + z*z/2/n
             r = z*np.sqrt((p*(1-p) + z*z/4/n)/n)

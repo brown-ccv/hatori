@@ -35,4 +35,3 @@ g = src.generator.Generator(data)
 
 # v.front("front/")
 # v.wordcloud("cloud/")
-

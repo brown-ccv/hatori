@@ -10,12 +10,15 @@ cor = flask_cors.CORS(app)
 
 @app.route("/")
 def main():
-	args = flask.request.args.get("topic_ids")
+	# limit = flask.request.args.get("limit",)
+	zval  = flask.request.args.get("z", 0)
+	args  = flask.request.args.get("topic_ids")
 	if args is None:
 		ids = []
 	else:
 		ids = sorted(set(int(i) for i in args.split(",")))
-	return json.dumps(src.g.topics(ids))
+	data = src.g.topics(ids, float(zval))
+	return json.dumps(data)
 
 if __name__ == "__main__":
 	port = int(os.environ.get('PORT', 5000))
