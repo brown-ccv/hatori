@@ -14,7 +14,7 @@ RUN pip install -r requirements.txt
 # EXPOSE 80
 
 # Define environment variable
-ENV NAME bartholomew
+ENV NAME hatori 
 
 # Run app.py when the container launches
 CMD ["python", "__init__.py"]
