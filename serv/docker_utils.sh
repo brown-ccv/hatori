@@ -30,6 +30,7 @@ if [ "$1" == "build-and-push" ]; then
     docker push ${REPOSITORY}/${IMAGE_NAME}:latest
     echo "Pushed ${REPOSITORY}/${IMAGE_NAME}:${TAG} and :latest"
 elif [ "$1" == "run-dev" ]; then
+    docker build -f Dockerfile --tag=${REPOSITORY}/${IMAGE_NAME} .
     docker run -p 5000:5000 --name ${IMAGE_NAME} ${REPOSITORY}/${IMAGE_NAME}:latest
 elif [ "$1" == "rm" ]; then
     docker rm ${IMAGE_NAME}
