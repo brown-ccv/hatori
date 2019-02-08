@@ -78,7 +78,7 @@ class App {
         count  : 0,
         maxdoc : 1,
         inp_id : "",
-        inp_z  : "0"
+        inp_z  : ""
       }
 
       const computed = {
