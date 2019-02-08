@@ -4,13 +4,13 @@ echo $1
 REPOSITORY=browndatasci
 IMAGE_NAME=hatori
 
-# Bail if we're on a dirty git tree
-if ! git diff-index --quiet HEAD; then
-    echo "You have uncommited changes. Please commit them before building and"
-    echo "populating. This helps ensure that all docker images are traceable"
-    echo "back to a git commit."
-    exit 1
-fi
+# # Bail if we're on a dirty git tree
+# if ! git diff-index --quiet HEAD; then
+#     echo "You have uncommited changes. Please commit them before building and"
+#     echo "populating. This helps ensure that all docker images are traceable"
+#     echo "back to a git commit."
+#     exit 1
+# fi
 
 if TRAVIS; then
    echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
