@@ -5878,14 +5878,14 @@ class Data {
     this.template = __WEBPACK_IMPORTED_MODULE_2_vue__["a" /* default */].compile(__webpack_require__(300))
   }
 
-  topic(id, call=()=>{}) {
+  topic(id, z, call=()=>{}) {
     // id is a string
     // todo: check for empty id
     // if (id in this.data)
     //   return setTimeout(() => call(this.data[id]), 200)
     console.log("new id", id)
     const url = id.length
-      ? `${ENDPOINT}?topic_ids=${id}`
+      ? `${ENDPOINT}?topic_ids=${id}&z=${z}`
       : ENDPOINT
     __WEBPACK_IMPORTED_MODULE_1_browser_request___default()(url, (e, r) => {
       const data = JSON.parse(r.body)
@@ -5901,13 +5901,13 @@ class App {
   renavigate(sort) {
     if (sort)
       this.vue.id.sort((a, b) => a-b)
-    const url = `/${this.vue.id.join(",")}`
+    const url = `/${this.vue.id.join(",")}/${this.vue.inp_z}`
     this.router.navigate(url)
-    this.vue.search = ""
+    this.vue.inp_id = ""
   }
 
-  add () {
-    const id = parseInt(this.vue.search)
+  add_id () {
+    const id = parseInt(this.vue.inp_id)
     if (!this.data.shared.ids.includes(id))
       return alert("id unknown")
     else if (this.vue.id.includes(id))
@@ -5917,10 +5917,15 @@ class App {
     this.renavigate(true)
   }
 
+  set_z () {
+    const z = parseFloat(this.vue.inp_z)
+    if (isNaN(z))
+      return alert("z is not a number")
+    this.renavigate(true)
+  }
+
   remove(id) {
-    console.log("sta", this.vue.id)
     this.vue.id.splice(this.vue.id.indexOf(id), 1);
-    console.log("end", this.vue.id)
     this.renavigate(false)
   }
 
@@ -5935,7 +5940,8 @@ class App {
         word   : [],
         count  : 0,
         maxdoc : 1,
-        search : "",
+        inp_id : "",
+        inp_z  : "0"
       }
 
       const computed = {
@@ -5959,7 +5965,8 @@ class App {
       const router = new __WEBPACK_IMPORTED_MODULE_0_navigo___default.a('./topic/', true, hash)
       router
         .on('topic', () => router.navigate(first))
-        .on(`/:id/`, ({id}) => self.load(id))
+        .on(`/:id/`, ({id}) => router.navigate(`/${id}/0/`))
+        .on(`/:id/:z/`, ({id, z}) => self.load(id, z))
         .on('/',     () => self.load(''))
       setTimeout(() => router.resolve(), 0)
       return router
@@ -5985,13 +5992,16 @@ class App {
       self.hash = "#!"
       self.router = loadrouter(self, self.hash)
       self.chart = loadchart(self)
+
+      self.load_time = null
+      self.load_hash = null
     }
 
     return main(this)
 
   }
 
-  load(id) {
+  load(id, z) {
     const dictmap = ({name, date, token, count}) =>
       ({ name : name ? name.toLowerCase() : '', date, token, count })
     const formword = (max, total) => ([word, count]) =>
@@ -6011,7 +6021,13 @@ class App {
     }
 
     function main(self) {
-      self.data.topic(id, data => {
+      const load_time = (new Date()).getTime()
+      const load_hash = Math.random()
+      self.load_time = load_time + 0
+      self.load_hash = load_hash + 0
+      self.data.topic(id, z, data => {
+        if (load_time != self.load_time ||load_hash != self.load_hash)
+          return
         const wordcounts = data.word
           .map(([word, count]) => count)
         const wordmax = Math.max(...wordcounts)
@@ -38403,7 +38419,7 @@ module.exports = {"ysums":{"1803":62564,"1804":153566,"1805":333009,"1806":40238
 /* 300 */
 /***/ (function(module, exports) {
 
-module.exports = "<div>\n\n  <div class=\"menu vertical-rl inline-block text-center\"> \n    <div class=\"header\"> menu </div>\n    <span class=\"choice\">\n      <a href=\"../front\"> front </a> &nbsp; &nbsp;\n      <a href=\"../home\"> home </a> &nbsp; &nbsp;\n      <a href=\"../map\"> embedding </a> &nbsp; &nbsp;\n      <a href=\"../graph\"> graph </a> &nbsp; &nbsp;\n    </span>\n  </div>\n\n\n  <section class=\"flex-column\">\n    <section class=\"pad-top\"></section>\n    <section class=\"holder\">\n      <div class=\"absolute scroll h-100\" style=\"width:20vw; overflow-x: hidden;\">\n        <div class=\"word relative\" v-for=\"w in word\">\n          <a class=\"no-dec\" v-bind:href=\"`../graph/?#!/?words[]=${w.word}`\" target=\"__blank\">\n            <div class=\"w-prop\">{{ (w.prop * 100).toFixed(2) + '%' }}</div>\n            <div class=\"lightblue w-bar\" v-bind:style=\"{ width: w.width * 100 + '%'}\">\n              <div class=\"w-text\">{{ w.word }}</div>\n            </div>\n          </a>\n        </div>\n      </div>\n\n      <section class=\"absolute scroll h-100\" style=\"right:7vw; width:63vw\">\n        <div class=\"flex-column\" style=\"height:inherit\">\n          <div class=\"chart\"><div id=\"chart\"></div><br></div>\n          <div class=\"docs relative\">\n\n            <div class=\"absolute scroll h-100 w-100\">\n\n              <table>\n\n                <tr class=\"doc relative\">\n                  <th class=\"d-date text-center\"> date </th>\n                  <th class=\"d-name text-left\"> name </th>\n                  <th class=\"d-token text-center\"> # tokens </th>\n                  <th class=\"d-count text-left\">\n                    <div class=\"d-bar\" style=\"width: 100%\">\n                    <div class=\"d-bar\" style=\"width: 0%\">\n                      <div class=\"d-text\"> # topic tokens </div>\n                    </div>\n                    </div>\n                  </th>\n                </tr>\n\n                <tr class=\"doc relative\" v-for=\"d in doc\">\n                  <td class=\"d-date text-center\"> {{ d.date }} </td>\n                  <td class=\"d-name\"> {{ d.name }} </td>\n                  <td class=\"d-token text-center\"> {{ d.token }} </td>\n                  <td class=\"d-count text-left\"> \n                    <div class=\"lightgray d-bar\" style=\"width: 100%\">\n                    <div class=\"lightblue d-bar\" v-bind:style=\"{ width: d.count / d.token * 100 + '%' }\">\n                      <div class=\"d-text\">{{ d.count }}</div>\n                    </div>\n                    </div>\n                  </td>\n                </tr>\n              </table>\n            </div>\n\n          </div>\n        </div>\n      </section>\n    </section>\n\n\n    <section class=\"footer\">\n      <!--div class=\"prop-bar\" v-bind:style=\"{ width: 100*width + '%'}\">\n        <div class=\"prop-text\">\n          makes up {{ (prop * 100).toFixed(2) }}% of the corpus\n        </div>\n      </div-->\n      <div \n        v-for=\"i in id\"\n        class=\"id-item\"\n        @click=\"app.remove(i)\"> {{i}} </div>\n    </section>\n  </section>\n\n\n  <div class=\"fixed pos-left top p-3\" style=\"width: 90%\">\n    <a class=\"no-dec title\" href=\"../home\">The British Hansard</a>\n    \n    <input\n      type=\"text\"\n      id=\"search\"\n      autocomplete=\"off\"\n      class=\"search\"\n      placeholder=\"add topic\"\n      v-model=\"search\"\n      @keyup.enter=\"app.add()\">\n\n  <!--div class=\"fixed pos-right top p-2\">\n    <a class='button no-dec pointer text-center'\n       target=\"__blank\"\n       v-bind:href='`../graph/#!/?` + word\n        .slice(0, 6)\n        .map(w=>`words[]=`+w.word)\n        .join(\"&\")'>\n      word graph for #{{ id }}\n    </a>\n  </div-->\n\n  </div>\n</div>"
+module.exports = "<div>\n\n  <div class=\"menu vertical-rl inline-block text-center\"> \n    <div class=\"header\"> menu </div>\n    <span class=\"choice\">\n      <a href=\"../front\"> front </a> &nbsp; &nbsp;\n      <a href=\"../home\"> home </a> &nbsp; &nbsp;\n      <a href=\"../map\"> embedding </a> &nbsp; &nbsp;\n      <a href=\"../graph\"> graph </a> &nbsp; &nbsp;\n    </span>\n  </div>\n\n\n  <section class=\"flex-column\">\n    <section class=\"pad-top\"></section>\n    <section class=\"holder\">\n      <div class=\"absolute scroll h-100\" style=\"width:20vw; overflow-x: hidden;\">\n        <div class=\"word relative\" v-for=\"w in word\">\n          <a class=\"no-dec\" v-bind:href=\"`../graph/?#!/?words[]=${w.word}`\" target=\"__blank\">\n            <div class=\"w-prop\">{{ (w.prop * 100).toFixed(2) + '%' }}</div>\n            <div class=\"lightblue w-bar\" v-bind:style=\"{ width: w.width * 100 + '%'}\">\n              <div class=\"w-text\">{{ w.word }}</div>\n            </div>\n          </a>\n        </div>\n      </div>\n\n      <section class=\"absolute scroll h-100\" style=\"right:7vw; width:63vw\">\n        <div class=\"flex-column\" style=\"height:inherit\">\n          <div class=\"chart\"><div id=\"chart\"></div><br></div>\n          <div class=\"docs relative\">\n\n            <div class=\"absolute scroll h-100 w-100\">\n\n              <table>\n\n                <tr class=\"doc relative\">\n                  <th class=\"d-date text-center\"> date </th>\n                  <th class=\"d-name text-left\"> name </th>\n                  <th class=\"d-token text-center\"> # tokens </th>\n                  <th class=\"d-count text-left\">\n                    <div class=\"d-bar\" style=\"width: 100%\">\n                    <div class=\"d-bar\" style=\"width: 0%\">\n                      <div class=\"d-text\"> # topic tokens </div>\n                    </div>\n                    </div>\n                  </th>\n                </tr>\n\n                <tr class=\"doc relative\" v-for=\"d in doc\">\n                  <td class=\"d-date text-center\"> {{ d.date }} </td>\n                  <td class=\"d-name\"> {{ d.name }} </td>\n                  <td class=\"d-token text-center\"> {{ d.token }} </td>\n                  <td class=\"d-count text-left\"> \n                    <div class=\"lightgray d-bar\" style=\"width: 100%\">\n                    <div class=\"lightblue d-bar\" v-bind:style=\"{ width: d.count / d.token * 100 + '%' }\">\n                      <div class=\"d-text\">{{ d.count }}</div>\n                    </div>\n                    </div>\n                  </td>\n                </tr>\n              </table>\n            </div>\n\n          </div>\n        </div>\n      </section>\n    </section>\n\n\n    <section class=\"footer\">\n      <!--div class=\"prop-bar\" v-bind:style=\"{ width: 100*width + '%'}\">\n        <div class=\"prop-text\">\n          makes up {{ (prop * 100).toFixed(2) }}% of the corpus\n        </div>\n      </div-->\n      <div \n        v-for=\"i in id\"\n        class=\"id-item\"\n        @click=\"app.remove(i)\"> {{i}} </div>\n    </section>\n  </section>\n\n\n  <div class=\"fixed pos-left top p-3\" style=\"width: 90%\">\n    <a class=\"no-dec title\" href=\"../home\">The British Hansard</a>\n\n    <input\n      type=\"text\"\n      id=\"search_z\"\n      autocomplete=\"off\"\n      class=\"search_z\"\n      placeholder=\"set z\"\n      v-model=\"inp_z\"\n      @keyup.enter=\"app.set_z()\">\n\n    <input\n      type=\"text\"\n      id=\"search_id\"\n      autocomplete=\"off\"\n      class=\"search_id\"\n      placeholder=\"add topic\"\n      v-model=\"inp_id\"\n      @keyup.enter=\"app.add_id()\">\n\n    <!--<div class=\"fixed pos-right top p-2\">\n    <a class='button no-dec pointer text-center'\n       target=\"__blank\"\n       v-bind:href='`../graph/#!/?` + word\n        .slice(0, 6)\n        .map(w=>`words[]=`+w.word)\n        .join(\"&\")'>\n      word graph for #{{ id }}\n    </a>\n  </div>-->\n\n  </div>\n</div>"
 
 /***/ })
 /******/ ]);

@@ -84,17 +84,26 @@
 
   <div class="fixed pos-left top p-3" style="width: 90%">
     <a class="no-dec title" href="../home">The British Hansard</a>
-    
+
     <input
       type="text"
-      id="search"
+      id="search_z"
       autocomplete="off"
-      class="search"
-      placeholder="add topic"
-      v-model="search"
-      @keyup.enter="app.add()">
+      class="search_z"
+      placeholder="set z"
+      v-model="inp_z"
+      @keyup.enter="app.set_z()">
 
-  <!--div class="fixed pos-right top p-2">
+    <input
+      type="text"
+      id="search_id"
+      autocomplete="off"
+      class="search_id"
+      placeholder="add topic"
+      v-model="inp_id"
+      @keyup.enter="app.add_id()">
+
+    <!--<div class="fixed pos-right top p-2">
     <a class='button no-dec pointer text-center'
        target="__blank"
        v-bind:href='`../graph/#!/?` + word
@@ -103,7 +112,7 @@
         .join("&")'>
       word graph for #{{ id }}
     </a>
-  </div-->
+  </div>-->
 
   </div>
 </div>

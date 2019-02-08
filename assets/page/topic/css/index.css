@@ -242,7 +242,7 @@ table { border-spacing: 0 0.8vh; }
     left : 5vw;
     top   : 5.25vh;
 }
-input {
+input.search_id {
     font-family: georgia;
     font-size: 100%;
     position: absolute;
@@ -257,8 +257,27 @@ input {
     text-align: center;
 }
 
-input:focus {
-    width: 8vw;
+input.search_z {
+    font-family: georgia;
+    font-size: 100%;
+    position: absolute;
+    right : 18vw;
+    top   : 4.25vh;
+    width : 3vw;
+    display: inline-block;
+    padding: 1vh 2.5vw;
+    border-radius: 0.5em 0.5em;
+    border: solid thin lightgray;
+    transition: 0.2s;
+    text-align: center;
+}
+
+input.search_z:focus {
+    width: 4vw;
+    transition: 0.2s;
+}
+input.search_id:focus {
+    width: 7vw;
     transition: 0.2s;
 }
 
