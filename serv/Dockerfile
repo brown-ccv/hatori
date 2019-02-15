@@ -17,5 +17,5 @@ EXPOSE 5000
 ENV NAME hatori 
 
 # Run app.py when the container launches
-CMD ["python", "__init__.py"]
+CMD ["python3", "__init__.py"]
 
