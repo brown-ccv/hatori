@@ -22,7 +22,7 @@
     <img 
       class="absolute center-vertical"
       style="height: 30vw; width: 30vw; right: 15vw" 
-      v-bind:src="`../../../cloud/${currname}.png`">  
+      v-bind:src="`../../cloud/${currname}.png`">  
     </img>
   </section>
 

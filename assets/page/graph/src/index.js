@@ -321,7 +321,7 @@ class App {
 }
 
 const app = new App()
-request.get("../../../json/graph.json", (e, r) => {
+request.get("../../json/graph.json", (e, r) => {
   const data = JSON.parse(r.body)
   window.app = app
   app.initialize(data)

@@ -5868,8 +5868,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 
 
-const ENDPOINT = "http://0.0.0.0:5000/"
-
+const ENDPOINT = "https://datasci.brown.edu/hatori/"
 class Data {
 
   constructor() {

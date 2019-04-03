@@ -38,15 +38,15 @@
           <div class="subholder">
           <a v-bind:href="`../topic/#!/${item.id}`">
             <img
-              v-bind:data-src="`../../../cloud/${item.id}.png`"
+              v-bind:data-src="`../../cloud/${item.id}.png`"
               class="object-contain cloud lazyload">  
             </img>
             <div class="alttext text-center object-contain p-3"> 
               <div>{{ item.id }} </div>
               <img 
                 class="trend m-3 lazyload"
-                src="./data/graph/placeholder.png"
-                v-bind:data-src="`../../../front/graph-${item.id}.png`">  
+                src="../../front/placeholder.png"
+                v-bind:data-src="`../../front/graph-${item.id}.png`">  
               </img>
               <br>
               <div style="relative">

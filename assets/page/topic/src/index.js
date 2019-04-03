@@ -5,8 +5,7 @@ import Vue from 'vue'
 
 import { bb } from 'billboard.js'
 
-const ENDPOINT = "http://0.0.0.0:5000/"
-
+const ENDPOINT = "https://datasci.brown.edu/hatori/"
 class Data {
 
   constructor() {

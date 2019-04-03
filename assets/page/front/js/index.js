@@ -60,237 +60,11 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 0);
+/******/ 	return __webpack_require__(__webpack_require__.s = 2);
 /******/ })
 /************************************************************************/
 /******/ ([
 /* 0 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue__ = __webpack_require__(3);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_navigo__ = __webpack_require__(6);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_navigo___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_navigo__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_browser_request__ = __webpack_require__(7);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_browser_request___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_browser_request__);
-// TODO: 
-//  a.) Mobile View
-//  b.) Loading Bar
-
-
-
-
-
-const KEYS = new Set(["id", "mean", "word", "prop"])
-
-class Data {
-
-  constructor(data) {
-    this.data = data
-    this.sorted = data.slice(0)
-    this.filted = this.sorted.slice(0)
-    this.top = data.reduce((a, b) => a+b.prop, 0)
-    this.max = Math.max(...data.map(t => t.prop))
-
-    this.word = ""
-    this.sorter = "id"
-    this.asc = true
-  }
-
-  sort(key, asc) {
-    if (asc === undefined)
-      asc = this.asc = key === this.sorter 
-        ? !this.asc
-        : true
-    const scale = asc ? 1 : -1
-    this.sorter = key
-    this.sorted.sort((a, b) => {
-      if (a[key] > b[key])
-        return scale
-      if (a[key] < b[key])
-        return -scale
-      return 0
-    })
-    this.search(this.word)
-  }
-
-  search(word) {
-    this.word = word
-    const hasword = word => topic =>
-      topic.word.some(w => w.includes(word))
-    const keyword = word
-      .split("|")
-      .map(w => hasword(w.trim()))
-    const filt = this.filted =  this.sorted
-      .filter(t => keyword.some(f => f(t)))
-  }
-
-}
-
-// class act
-class App {
-
-  constructor(pagesize=25) {
-
-    function makevue(self) {
-      const html = __webpack_require__(8)
-      const tmpl = __WEBPACK_IMPORTED_MODULE_0_vue__["a" /* default */].compile(html)
-      const data = { 
-        topics  : [],
-        page    : 0,
-        search  : '',
-        app     : self
-      }
-      const options = {
-        el              : '#mainapp',
-        data            : data,
-        render          : tmpl.render,
-        staticRenderFns : tmpl.staticRenderFns,
-      }
-
-      return new __WEBPACK_IMPORTED_MODULE_0_vue__["a" /* default */](options)
-    }
-
-
-    function main(self, pagesize) {
-      self.vue = makevue(self)
-      self.pagesize = pagesize
-    }
-
-    return main(this, pagesize)
-  }
-
-  initialize(data) {
-
-    function makenav(self) {
-      const nav = new __WEBPACK_IMPORTED_MODULE_1_navigo___default.a("./front/", true, "#!")
-      const call = ({ key, asc, page, word }) => {
-        key = (key || "").toLowerCase()
-        key = KEYS.has(key) ? key : "id"
-        asc = asc === "false" ? false : true
-        page = parseInt(page)
-        page = page ? page : 0
-        word = word || ""
-        self.goto(key, asc, page, word)
-      }
-      nav.on("/:key/:asc/:page/:word", call)
-      nav.on("/:key/:asc/:page/", call)
-      nav.on("/:key/:asc", call)
-      nav.on("/:key", call)
-      nav.on("/", call)
-
-      return nav
-    }
-
-    function main(self, data) {
-      self.data = data
-      self.nav = makenav(self)
-      self.nav.resolve()
-    }
-
-    return main(this, data)
-  }
-
-  goto(key, asc, page, word) {
-    console.log(asc, key, page, word)
-    this.vue.search = word
-    this.sort(key, asc)
-    this.show(page)
-    this.search()
-  }
-
-  updateurl() {
-    const asc = this.data.asc
-    const key = this.data.sorter
-    const word = this.data.word
-    const page = this.vue.page
-
-    this.nav.pause()
-    this.nav.navigate(`/${key}/${asc}/${page}/${word}`)
-    // this.nav.resume()
-  }
-
-  sort(key, asc) {
-    console.log("sort")
-    if (!this.data) return
-    this.data.sort(key, asc)
-    this.show(0)
-    this.updateurl()
-  }
-
-  search(word) {
-    if (!this.data) return
-    if (word === undefined)
-      word = this.vue.search
-    if (this.word === this.data.word)
-      return
-    console.log(word)
-    this.data.search(word)
-    this.show(0)
-    this.updateurl()
-  }
-
-  format({id, word, prop, mean}) {
-    return {
-      id    : id.toString(),
-      rprop : 100 * prop / this.data.max,
-      prop  : Math.round(10000 * prop / this.data.top) / 100,
-      // graph : `./graph/graph-${id}.png`,
-      graph : `../../../front/graph-${id}.png`,
-      link  : `../topic/#!/${id}/`,
-      word  : word.map(word => ({ 
-        word, link : `../graph/#!/?words[]=${word}` 
-      }))
-    }
-  }
-
-  show(page) {
-    if (!this.data) return
-    const start = this.pagesize * page
-    const end = start + this.pagesize
-    this.vue.topics = this.data.filted
-      .slice(start, end)
-      .map(t => this.format(t))
-    this.loaded = true
-    this.vue.page = page
-    this.updateurl()
-  }
-
-  first() {
-    this.show(0)
-  }
-
-  next() {
-    const start = (this.vue.page + 1) * this.pagesize
-    const len = this.data.filted.length
-    if (start < len)
-      this.show(this.vue.page + 1)
-  }
-
-  prev() {
-    if (this.vue.page > 0)
-      this.show(this.vue.page - 1)
-  }
-
-  last() {
-    const len = this.data.filted.length - 1
-    const page = Math.floor(len / this.pagesize)
-    this.show(page)
-  }
-
-}
-
-const app = new App()
-
-__WEBPACK_IMPORTED_MODULE_2_browser_request___default.a.get("../../../json/front.json", (e, r) => {
-  let data = new Data(JSON.parse(r.body))
-  app.initialize(data)
-  app.show(0)
-})
-
-/***/ }),
-/* 1 */
 /***/ (function(module, exports) {
 
 // shim for using process in browser
@@ -480,7 +254,7 @@ process.umask = function() { return 0; };
 
 
 /***/ }),
-/* 2 */
+/* 1 */
 /***/ (function(module, exports) {
 
 var g;
@@ -505,6 +279,232 @@ try {
 
 module.exports = g;
 
+
+/***/ }),
+/* 2 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue__ = __webpack_require__(3);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_navigo__ = __webpack_require__(6);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_navigo___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_navigo__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_browser_request__ = __webpack_require__(7);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_browser_request___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_browser_request__);
+// TODO: 
+//  a.) Mobile View
+//  b.) Loading Bar
+
+
+
+
+
+const KEYS = new Set(["id", "mean", "word", "prop"])
+
+class Data {
+
+  constructor(data) {
+    this.data = data
+    this.sorted = data.slice(0)
+    this.filted = this.sorted.slice(0)
+    this.top = data.reduce((a, b) => a+b.prop, 0)
+    this.max = Math.max(...data.map(t => t.prop))
+
+    this.word = ""
+    this.sorter = "id"
+    this.asc = true
+  }
+
+  sort(key, asc) {
+    if (asc === undefined)
+      asc = this.asc = key === this.sorter 
+        ? !this.asc
+        : true
+    const scale = asc ? 1 : -1
+    this.sorter = key
+    this.sorted.sort((a, b) => {
+      if (a[key] > b[key])
+        return scale
+      if (a[key] < b[key])
+        return -scale
+      return 0
+    })
+    this.search(this.word)
+  }
+
+  search(word) {
+    this.word = word
+    const hasword = word => topic =>
+      topic.word.some(w => w.includes(word))
+    const keyword = word
+      .split("|")
+      .map(w => hasword(w.trim()))
+    const filt = this.filted =  this.sorted
+      .filter(t => keyword.some(f => f(t)))
+  }
+
+}
+
+// class act
+class App {
+
+  constructor(pagesize=25) {
+
+    function makevue(self) {
+      const html = __webpack_require__(8)
+      const tmpl = __WEBPACK_IMPORTED_MODULE_0_vue__["a" /* default */].compile(html)
+      const data = { 
+        topics  : [],
+        page    : 0,
+        search  : '',
+        app     : self
+      }
+      const options = {
+        el              : '#mainapp',
+        data            : data,
+        render          : tmpl.render,
+        staticRenderFns : tmpl.staticRenderFns,
+      }
+
+      return new __WEBPACK_IMPORTED_MODULE_0_vue__["a" /* default */](options)
+    }
+
+
+    function main(self, pagesize) {
+      self.vue = makevue(self)
+      self.pagesize = pagesize
+    }
+
+    return main(this, pagesize)
+  }
+
+  initialize(data) {
+
+    function makenav(self) {
+      const nav = new __WEBPACK_IMPORTED_MODULE_1_navigo___default.a("./front/", true, "#!")
+      const call = ({ key, asc, page, word }) => {
+        key = (key || "").toLowerCase()
+        key = KEYS.has(key) ? key : "id"
+        asc = asc === "false" ? false : true
+        page = parseInt(page)
+        page = page ? page : 0
+        word = word || ""
+        self.goto(key, asc, page, word)
+      }
+      nav.on("/:key/:asc/:page/:word", call)
+      nav.on("/:key/:asc/:page/", call)
+      nav.on("/:key/:asc", call)
+      nav.on("/:key", call)
+      nav.on("/", call)
+
+      return nav
+    }
+
+    function main(self, data) {
+      self.data = data
+      self.nav = makenav(self)
+      self.nav.resolve()
+    }
+
+    return main(this, data)
+  }
+
+  goto(key, asc, page, word) {
+    console.log(asc, key, page, word)
+    this.vue.search = word
+    this.sort(key, asc)
+    this.show(page)
+    this.search()
+  }
+
+  updateurl() {
+    const asc = this.data.asc
+    const key = this.data.sorter
+    const word = this.data.word
+    const page = this.vue.page
+
+    this.nav.pause()
+    this.nav.navigate(`/${key}/${asc}/${page}/${word}`)
+    // this.nav.resume()
+  }
+
+  sort(key, asc) {
+    console.log("sort")
+    if (!this.data) return
+    this.data.sort(key, asc)
+    this.show(0)
+    this.updateurl()
+  }
+
+  search(word) {
+    if (!this.data) return
+    if (word === undefined)
+      word = this.vue.search
+    if (this.word === this.data.word)
+      return
+    console.log(word)
+    this.data.search(word)
+    this.show(0)
+    this.updateurl()
+  }
+
+  format({id, word, prop, mean}) {
+    return {
+      id    : id.toString(),
+      rprop : 100 * prop / this.data.max,
+      prop  : Math.round(10000 * prop / this.data.top) / 100,
+      // graph : `./graph/graph-${id}.png`,
+      graph : `../../front/graph-${id}.png`,
+      link  : `../topic/#!/${id}/`,
+      word  : word.map(word => ({ 
+        word, link : `../graph/#!/?words[]=${word}` 
+      }))
+    }
+  }
+
+  show(page) {
+    if (!this.data) return
+    const start = this.pagesize * page
+    const end = start + this.pagesize
+    this.vue.topics = this.data.filted
+      .slice(start, end)
+      .map(t => this.format(t))
+    this.loaded = true
+    this.vue.page = page
+    this.updateurl()
+  }
+
+  first() {
+    this.show(0)
+  }
+
+  next() {
+    const start = (this.vue.page + 1) * this.pagesize
+    const len = this.data.filted.length
+    if (start < len)
+      this.show(this.vue.page + 1)
+  }
+
+  prev() {
+    if (this.vue.page > 0)
+      this.show(this.vue.page - 1)
+  }
+
+  last() {
+    const len = this.data.filted.length - 1
+    const page = Math.floor(len / this.pagesize)
+    this.show(page)
+  }
+
+}
+
+const app = new App()
+
+__WEBPACK_IMPORTED_MODULE_2_browser_request___default.a.get("../../json/front.json", (e, r) => {
+  let data = new Data(JSON.parse(r.body))
+  app.initialize(data)
+  app.show(0)
+})
 
 /***/ }),
 /* 3 */
@@ -11321,7 +11321,7 @@ Vue$3.compile = compileToFunctions;
 
 /* harmony default export */ __webpack_exports__["a"] = (Vue$3);
 
-/* WEBPACK VAR INJECTION */}.call(__webpack_exports__, __webpack_require__(1), __webpack_require__(2), __webpack_require__(4).setImmediate))
+/* WEBPACK VAR INJECTION */}.call(__webpack_exports__, __webpack_require__(0), __webpack_require__(1), __webpack_require__(4).setImmediate))
 
 /***/ }),
 /* 4 */
@@ -11573,7 +11573,7 @@ exports.clearImmediate = clearImmediate;
     attachTo.clearImmediate = clearImmediate;
 }(typeof self === "undefined" ? typeof global === "undefined" ? this : global : self));
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(2), __webpack_require__(1)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1), __webpack_require__(0)))
 
 /***/ }),
 /* 6 */

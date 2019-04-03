@@ -6186,7 +6186,7 @@ class App {
 }
 
 const app = new App()
-__WEBPACK_IMPORTED_MODULE_2_browser_request___default.a.get("../../../json/graph.json", (e, r) => {
+__WEBPACK_IMPORTED_MODULE_2_browser_request___default.a.get("../../json/graph.json", (e, r) => {
   const data = JSON.parse(r.body)
   window.app = app
   app.initialize(data)

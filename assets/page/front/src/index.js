@@ -161,7 +161,7 @@ class App {
       rprop : 100 * prop / this.data.max,
       prop  : Math.round(10000 * prop / this.data.top) / 100,
       // graph : `./graph/graph-${id}.png`,
-      graph : `../../../front/graph-${id}.png`,
+      graph : `../../front/graph-${id}.png`,
       link  : `../topic/#!/${id}/`,
       word  : word.map(word => ({ 
         word, link : `../graph/#!/?words[]=${word}` 
@@ -207,7 +207,7 @@ class App {
 
 const app = new App()
 
-request.get("../../../json/front.json", (e, r) => {
+request.get("../../json/front.json", (e, r) => {
   let data = new Data(JSON.parse(r.body))
   app.initialize(data)
   app.show(0)
