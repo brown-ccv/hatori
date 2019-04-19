@@ -66,6 +66,8 @@ class TextData:
         next(state), next(state), next(state)  # keys, alphas, betas
         for iteration, line in enumerate(state):
             doc, _, _, _, word, topic = line.split(SPACE)
+            if word.lower() == "williewaiola":
+                word = "substitute_word"
             doc, topic = int(doc), int(topic)
             yield doc, topic, word
         state.close()
