@@ -1,7 +1,6 @@
 huge-data/*
 assets/node_modules/*
 .DS_Store
-# serv/data/*
-*/__pycache__/*
+__pycache__/*
 analysis/data/*
 *.pyc

@@ -7,6 +7,10 @@ DELIMITER = "\t"
 SPACE = " "
 
 class TextData:
+    """
+    This compiles basic counting statistics about the corpus
+    such as how many words are in a topic in a given year.
+    """
 
     __slots__ = [
         "_doclist",
@@ -52,7 +56,7 @@ class TextData:
     def doclist(self):
         """
         returns a list of a tuples of document metadata
-            
+
             (name, date and year, num_tokens)
 
         """
@@ -94,6 +98,15 @@ class TextData:
     @setproperty
     def counts(self):
 
+        """
+        self.counts.topic.word:
+            Topic ID -> Word -> Number of words equal to Word that is in Topic ID
+
+        self.counts.topic.doc:
+            Topic ID -> Document -> Number of words in the topic in the given document
+
+        etc.
+        """
         def addcount(dictionary, key, value):
             if key not in dictionary:
                 dictionary[key] = {}
@@ -138,9 +151,16 @@ class TextData:
 
     @setproperty
     def sorts(self):
-        "returns a dictionary of items sorted by importance"
 
         def counter(dictionary):
+            """
+            Given a map of map
+
+                dictionary: A -> B -> Number
+
+            return A -> List[B] where List[B] is such that
+            map(List[B], B -> dictionary[A][B]) is increasing
+            """
             return {
                 key : sorted(dictvals, key=lambda k: -dictvals[k])
                 for key, dictvals in dictionary.items()

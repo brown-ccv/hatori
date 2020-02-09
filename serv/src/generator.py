@@ -12,7 +12,17 @@ import src.util
 #   home page  - time graph
 #   home page  - wordcloud
 
+
 class Visualizer:
+    """
+    This class is responsible for generating images and visualizations 
+    of the data compiled from the corpus. It takes in two parameters
+
+        - data: src.reader.TextData 
+        - basepath: str. 
+
+    The base path is where the files will be generated to.
+    """
 
     def __init__(self, data, basepath):
         self.data = data
@@ -37,6 +47,10 @@ class Visualizer:
         import matplotlib.pyplot as plt
 
         def makeplaceholder(self, path):
+            """
+            Create a placeholder topic proportion over-time
+            plot. This is just a flat line. 
+            """
             x, y = [0, 1], [0, 0]
             src.util.makepath(f"{self.join(path)}")
             name = os.path.join(self.basepath, path, 'placeholder.png')
@@ -54,6 +68,9 @@ class Visualizer:
 
 
         def makeplots(self, path):
+            """
+            Create plots of topics propertion over-time
+            """
             tydict = self.data.counts.topic.year
             ysums = self.data.sums.year
             directory = os.path.join(self.basepath, path)
@@ -117,8 +134,19 @@ class Generator:
 
     def front(self, path="front/"):
 
-        # weighted proportions
         def mean(ycount, sums):
+            """
+            sums: 
+                year -> total number of words in any topic that year
+
+            ycount:
+                year -> total number of words in a given topic that year
+
+            Computes the mean year of a topic with words represented
+            by ycount, i.e., view a topic as a probability distribution 
+            over time and compute the mean of that probability distribution.
+            We use this to sort the topics by time.
+            """
             exp = 0
             total = 0
             for year, count in ycount.items():
@@ -139,7 +167,6 @@ class Generator:
 
         return main(self)
 
-    # this is the word graphs
     def graph(self, path="graph/"):
         years = sorted([y
             for y in self.data.sums.year
@@ -153,6 +180,10 @@ class Generator:
         }
 
     def viz(self, newdist=False):
+        """
+        embed of the topics (with jensen shannon distance)
+        into two dimensional euclidean space.
+        """
 
         def tolist(keys, freqs, data):
             data = data.astype(float)
@@ -181,21 +212,21 @@ class Generator:
 
     def topics(self, topic_ids, zval):
 
-        # wilson score lower bound
-        # of confidence interval
         def value(v, n):
-            # if v < 100:
-            #     return 0
-            # else:
-            #     return v/n
+            """
+            wilson score lower bound of confidence interval
+            """
             z = zval
             p = v/n
             l = p + z*z/2/n
             r = z*np.sqrt((p*(1-p) + z*z/4/n)/n)
             return (l - r) / (1 + z*z/n)
-            # return v/n
 
         def sortdoc(self, counts):
+            """
+            get self.n_docs documents with the highest
+            wilson score lower bound of confidence interval
+            """
             sorts  = []
             lim    = range(self.n_docs)
             tokens = self.data.sums.doc
@@ -205,9 +236,9 @@ class Generator:
                 heapq.heappush(sorts, (val, k))
             for k, v in stream:
                 val = value(v, tokens[k])
-                # this is a little weird
-                # but it's faster for
-                # smaller n and len(topic_ids)
+                # if the value is less than
+                # minimum of the heap, then its
+                # less than everything else in the heap
                 if val < sorts[0][0]:
                     continue
                 heapq.heappop(sorts)
