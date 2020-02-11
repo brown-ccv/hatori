@@ -1,10 +1,11 @@
 import math
 from wordcloud import WordCloud
 
+
 def generate(freq, path, dark=0.5):
     light = 1 - dark
-    scale = lambda m, M: int((M - m) * light + m)
-    scaled_freq = { word : math.log(2 + freq[word]) for word in freq}
+    def scale(m, M): return int((M - m) * light + m)
+    scaled_freq = {word: math.log(2 + freq[word]) for word in freq}
     r = scale(70, 130)
     g = scale(130, 220)
     b = scale(150, 255)

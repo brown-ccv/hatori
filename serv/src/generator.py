@@ -32,10 +32,10 @@ class Visualizer:
         return os.path.join(self.basepath, path)
 
     def wordcloud(self, path):
-        path  = os.path.join(self.basepath, path)
+        path = os.path.join(self.basepath, path)
         twdict = self.data.counts.topic.word
         tsums = self.data.sums.topic
-        sorts = sorted([(tsums[i],i) for i in tsums])
+        sorts = sorted([(tsums[i], i) for i in tsums])
         for ind, (_, i) in enumerate(reversed(sorts)):
             print("generating image number", ind, flush=True)
             subpath = f"{path}{i}.png"
@@ -60,12 +60,11 @@ class Visualizer:
             plt.xticks([])
             plt.axis("off")
             plt.savefig(name,
-                transparent=True,
-                dpi=100,
-                bbox_inches='tight',
-                pad_inches=0)
+                        transparent=True,
+                        dpi=100,
+                        bbox_inches='tight',
+                        pad_inches=0)
             plt.close()
-
 
         def makeplots(self, path):
             """
@@ -79,9 +78,9 @@ class Visualizer:
                 print("plotting topic number", t, flush=True)
                 name = os.path.join(directory, f"graph-{t}.png")
                 data = tydict[t]
-                items = [(y, c / ysums[y]) 
-                    for y, c in data.items() 
-                    if y is not None]
+                items = [(y, c / ysums[y])
+                         for y, c in data.items()
+                         if y is not None]
                 x, y = zip(*sorted(items))
                 plt.plot(x, y, linewidth=3, color="lightblue")
                 plt.tight_layout()
@@ -116,16 +115,16 @@ class Generator:
     def save(self, path, asset_path):
         ds = self.data.sums
         shared = {
-            "ysums" : ds.year,
-            "ids"   : sorted(ds.topic),
-            "total" : sum(ds.topic.values()),
+            "ysums": ds.year,
+            "ids": sorted(ds.topic),
+            "total": sum(ds.topic.values()),
         }
 
         data = {
-            "embed"  : self.viz(),
-            "graph"  : self.graph(),
-            "front"  : self.front(),
-            "shared" : shared
+            "embed": self.viz(),
+            "graph": self.graph(),
+            "front": self.front(),
+            "shared": shared
         }
 
         for k, v in data.items():
@@ -150,8 +149,9 @@ class Generator:
             exp = 0
             total = 0
             for year, count in ycount.items():
-                if year is None: continue
-                prop = (count / sums[year]) 
+                if year is None:
+                    continue
+                prop = (count / sums[year])
                 total += prop
                 exp += year * prop
             return exp / total
@@ -159,24 +159,25 @@ class Generator:
         def main(self):
             d = self.data
             return [{
-                "id"   : t,
-                "prop" : d.sums.topic[t],
-                "word" : d.sorts.topic.word[t][:16],
-                "mean" : mean(d.counts.topic.year[t], d.sums.year)
+                "id": t,
+                "prop": d.sums.topic[t],
+                "word": d.sorts.topic.word[t][:16],
+                "mean": mean(d.counts.topic.year[t], d.sums.year)
             } for t in sorted(d.sums.topic)]
 
         return main(self)
 
     def graph(self, path="graph/"):
         years = sorted([y
-            for y in self.data.sums.year
-            if y is not None])
-        load = lambda d: [d.get(y, 0) for y in years]
+                        for y in self.data.sums.year
+                        if y is not None])
+
+        def load(d): return [d.get(y, 0) for y in years]
         wydict = self.data.counts.word.year
         return {
-            "year" : years,
-            "word" : {word:load(d) for word, d in wydict.items()},
-            "sums" : [self.data.sums.year[y] for y in years]
+            "year": years,
+            "word": {word: load(d) for word, d in wydict.items()},
+            "sums": [self.data.sums.year[y] for y in years]
         }
 
     def viz(self, newdist=False):
@@ -193,22 +194,21 @@ class Generator:
         freqs = np.array([self.data.sums.topic[i] for i in keys])
         freqs = freqs / np.mean(freqs)
         if newdist:
-            words   = sorted(self.data.sums.word)
-            metric  = "jensenshannon"
+            words = sorted(self.data.sums.word)
+            metric = "jensenshannon"
             twcount = self.data.counts.topic.word
-            data    = {key : [dist.get(word, 0) for word in words]
-                               for key, dist in twcount.items()}
+            data = {key: [dist.get(word, 0) for word in words]
+                    for key, dist in twcount.items()}
             data = [data[item] for item in sorted(data)]
             self.visualizer = viz.Visualizer(data, metric, make=True)
         else:
             self.visualizer = viz.Visualizer(make=False)
 
         return {
-            "sammon" : tolist(keys, freqs, self.visualizer.sammon()),
-            "tsne"   : tolist(keys, freqs, self.visualizer.tsne()),
-            "mds"    : tolist(keys, freqs, self.visualizer.mds())
+            "sammon": tolist(keys, freqs, self.visualizer.sammon()),
+            "tsne": tolist(keys, freqs, self.visualizer.tsne()),
+            "mds": tolist(keys, freqs, self.visualizer.mds())
         }
-
 
     def topics(self, topic_ids, zval):
 
@@ -227,8 +227,8 @@ class Generator:
             get self.n_docs documents with the highest
             wilson score lower bound of confidence interval
             """
-            sorts  = []
-            lim    = range(self.n_docs)
+            sorts = []
+            lim = range(self.n_docs)
             tokens = self.data.sums.doc
             stream = counts.items()
             for _, (k, v) in zip(lim, stream):
@@ -254,11 +254,11 @@ class Generator:
             for d in sortdoc(self, ddict):
                 name, year, date = doclist[d]
                 output.append({
-                    "name"  : name,
-                    "date"  : date,
-                    "year"  : year,
-                    "token" : self.data.sums.doc[d],
-                    "count" : ddict[d]
+                    "name": name,
+                    "date": date,
+                    "year": year,
+                    "token": self.data.sums.doc[d],
+                    "count": ddict[d]
                 })
             return output
 
@@ -266,18 +266,18 @@ class Generator:
             dct = self.data.counts.topic
             dst = self.data.sums.topic
             years = sorted(y
-                for y in self.data.sums.year
-                if y is not None)
+                           for y in self.data.sums.year
+                           if y is not None)
             tw = src.util.merge_sum(dct.word, topic_ids)
             ty = src.util.merge_sum(dct.year, topic_ids)
             ct = sum(dst[t] for t in topic_ids)
-            tw = [(k,v) for k,v in tw.items() if v/ct > 0.0005]
+            tw = [(k, v) for k, v in tw.items() if v/ct > 0.0005]
             return {
-                "id"    : topic_ids,
-                "doc"   : loaddoc(self, topic_ids),
-                "word"  : sorted(tw, key=lambda p: -p[1]),
-                "year"  : [ty.get(y, 0) for y in years],
-                "count" : sum(dst[t] for t in topic_ids)
+                "id": topic_ids,
+                "doc": loaddoc(self, topic_ids),
+                "word": sorted(tw, key=lambda p: -p[1]),
+                "year": [ty.get(y, 0) for y in years],
+                "count": sum(dst[t] for t in topic_ids)
             }
 
         return main(self, topic_ids)

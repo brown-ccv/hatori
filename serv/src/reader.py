@@ -6,6 +6,7 @@ from src.util import setproperty, DictObject
 DELIMITER = "\t"
 SPACE = " "
 
+
 class TextData:
     """
     This compiles basic counting statistics about the corpus
@@ -49,7 +50,7 @@ class TextData:
             index = name.rfind(SPACE)
             year = round(float(year))
             name, date = name[:index], name[index+1:]
-            yield name, year, date#, text.count(SPACE) + 1
+            yield name, year, date  # , text.count(SPACE) + 1
         docs.close()
 
     @setproperty
@@ -97,7 +98,6 @@ class TextData:
 
     @setproperty
     def counts(self):
-
         """
         self.counts.topic.word:
             Topic ID -> Word -> Number of words equal to Word that is in Topic ID
@@ -137,13 +137,13 @@ class TextData:
                 addcount(yw, year, word)
                 addcount(wy, word, year)
             return DictObject({
-                "doc"  : DictObject({ "topic" : dt }),
-                "year" : DictObject({ "topic" : yt, "word" : yw }),
-                "word" : DictObject({ "topic" : wt, "year" : wy }),
+                "doc": DictObject({"topic": dt}),
+                "year": DictObject({"topic": yt, "word": yw}),
+                "word": DictObject({"topic": wt, "year": wy}),
                 "topic": DictObject({
-                    "year" : ty,
-                    "word" : tw,
-                    "doc"  : td
+                    "year": ty,
+                    "word": tw,
+                    "doc": td
                 }),
             })
 
@@ -162,7 +162,7 @@ class TextData:
             map(List[B], B -> dictionary[A][B]) is increasing
             """
             return {
-                key : sorted(dictvals, key=lambda k: -dictvals[k])
+                key: sorted(dictvals, key=lambda k: -dictvals[k])
                 for key, dictvals in dictionary.items()
             }
 
@@ -176,13 +176,13 @@ class TextData:
             td = counter(self.counts.topic.doc)
             dt = counter(self.counts.doc.topic)
             return DictObject({
-                "doc"  : DictObject({ "topic" : dt }),
-                "year" : DictObject({ "topic" : yt, "word" : yw }),
-                "word" : DictObject({ "topic" : wt, "year" : wy }),
+                "doc": DictObject({"topic": dt}),
+                "year": DictObject({"topic": yt, "word": yw}),
+                "word": DictObject({"topic": wt, "year": wy}),
                 "topic": DictObject({
-                    "year" : ty,
-                    "word" : tw,
-                    "doc"  : td
+                    "year": ty,
+                    "word": tw,
+                    "doc": td
                 }),
             })
 
@@ -193,15 +193,15 @@ class TextData:
 
         def counter(dictionary):
             return {
-                key : sum(dictvals.values())
+                key: sum(dictvals.values())
                 for key, dictvals in dictionary.items()
             }
 
         return DictObject({
-            "doc"   : counter(self.counts.doc.topic),
-            "word"  : counter(self.counts.word.year),
-            "year"  : counter(self.counts.year.topic),
-            "topic" : counter(self.counts.topic.year),
+            "doc": counter(self.counts.doc.topic),
+            "word": counter(self.counts.word.year),
+            "year": counter(self.counts.year.topic),
+            "topic": counter(self.counts.topic.year),
         })
 
     def save(self, name):

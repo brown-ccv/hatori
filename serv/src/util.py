@@ -3,6 +3,7 @@ import numpy as np
 import functools
 import json
 
+
 def setproperty(func):
     name = func.__name__
     newname = "_" + name

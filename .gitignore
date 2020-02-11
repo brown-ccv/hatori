@@ -4,3 +4,6 @@ assets/node_modules/*
 __pycache__/*
 analysis/data/*
 *.pyc
+.env
+raw-data/topic_state_500
+raw-data/mc-20171122-stemmed.txt

@@ -15,7 +15,7 @@ class Visualizer:
     def __init__(self, points=[], metric="jensenshannon", make=False):
         self.points = points
         self.metric = metric
-        
+
         if make:
             print("computing pairwise distance")
             condensed = distance.pdist(points, metric)
@@ -38,22 +38,21 @@ class Visualizer:
             metric='precomputed')
         return trainer.fit_transform(self.pdist)
 
-
     def mds(self):
         n = self.pdist.shape[0]
-        minimum = min(self.pdist[i, j] 
-                        for i in range(n) 
-                        for j in range(i)) * 0.5
+        minimum = min(self.pdist[i, j]
+                      for i in range(n)
+                      for j in range(i)) * 0.5
         dist = (self.pdist - minimum) ** 3
         trainer = manifold.MDS(2, verbose=1, dissimilarity='precomputed')
         return trainer.fit_transform(dist)
 
     def sammon(self):
         n = self.pdist.shape[0]
-        minimum = min(self.pdist[i, j] 
-                        for i in range(n) 
-                        for j in range(i)) * 0.5
-        trainer = src.visualizer.sammon.Sammon(2, verbose=1, dissimilarity='precomputed')
+        minimum = min(self.pdist[i, j]
+                      for i in range(n)
+                      for j in range(i)) * 0.5
+        trainer = src.visualizer.sammon.Sammon(
+            2, verbose=1, dissimilarity='precomputed')
         dist = (self.pdist - minimum) ** 3
         return trainer.fit_transform(dist)
-

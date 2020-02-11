@@ -14,6 +14,7 @@ from sklearn.utils import check_random_state, check_array, check_symmetric
 import numpy as np
 from scipy.stats.mstats import gmean
 
+
 class Sammon(BaseEstimator):
     """Sammon Mapping
 
