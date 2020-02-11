@@ -9,7 +9,7 @@ class App {
     function loadapp(self) {
 
       const keys = Object.keys(self.data).sort().reverse()
-      const tmpl = Vue.compile(require('../tmpl/map.vue'))
+      const tmpl = Vue.compile(require('../tmpl/map.vue').default)
       const dummy = Object.keys(self.data[keys[0]])[0]
       const data = {
         keys : keys,
@@ -30,7 +30,6 @@ class App {
         render          : tmpl.render,
         staticRenderFns : tmpl.staticRenderFns,
       }
-      console.log(keys)
 
       return new Vue(options)
     }
@@ -64,7 +63,6 @@ class App {
     function main(self) {
       self.raw = require('../../../json/embed.json')
       self.data = preprocess(self.raw)
-      console.log(self.data)
       self.vue = loadapp(self)
       self.hash = "#!"
       self.router = loadrouter(self, self.hash)

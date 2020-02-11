@@ -58,7 +58,7 @@ class App {
   constructor(pagesize=25) {
 
     function makevue(self) {
-      const html = require("../tmpl/front.html")
+      const html = require("../tmpl/front.html").default
       const tmpl = Vue.compile(html)
       const data = { 
         topics  : [],

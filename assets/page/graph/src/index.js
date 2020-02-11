@@ -173,7 +173,7 @@ class App {
   constructor() {
 
     function makevue(self) {
-      const html = require("../tmpl/graph.vue")
+      const html = require("../tmpl/graph.vue").default
       const tmpl = Vue.compile(html)
       const data = {
         search: '',

@@ -11,7 +11,7 @@ class Data {
   constructor() {
     this.data = {}
     this.shared = require("../../../../assets/json/shared.json")
-    this.template = Vue.compile(require('../tmpl/topic.vue'))
+    this.template = Vue.compile(require('../tmpl/topic.vue').default)
   }
 
   topic(id, z, call=()=>{}) {

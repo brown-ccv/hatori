@@ -8,7 +8,7 @@ class App {
   constructor() {
 
     function loadapp(self) {
-      const tmpl = Vue.compile(require('../tmpl/index.vue'))
+      const tmpl = Vue.compile(require('../tmpl/index.vue').default)
       const length = 100
       const data = {
         items : self.items,

@@ -7,15 +7,7 @@ module.exports = {
     filename: 'index.js',
     path: path.resolve(__dirname, 'js')
   },
-
   module: {
-    loaders: [
-      {
-        test: /\.js$/,
-        loader: 'babel-loader?presets[]=es2015'
-      }
-    ],
-    
     rules: [
       {
         test : /\.vue$/,
