@@ -19,7 +19,6 @@ class TextData:
         "_counts",
         "_sorts",
         "_sums",
-
         "large",
         "namestate",
         "namedocs",

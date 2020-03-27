@@ -6,12 +6,10 @@ import src.wordcloud as wordcloud
 import src.visualizer as viz
 import src.util
 
-
 # non text assets:
 #   front page - time graph
 #   home page  - time graph
 #   home page  - wordcloud
-
 
 class Visualizer:
     """
