@@ -1,0 +1,94 @@
+.choice > a {
+    color: black;
+    text-decoration: none; 
+}
+.choice > a:hover { 
+    color: lightblue;
+}
+
+div.menu {
+    z-index: 10;
+    position: fixed;
+    left: 3%;
+    top: 50%;
+    transform: translateY(-50%) rotate(180deg);
+}
+
+.choice { display: none }
+div.menu:hover { height: 100%; }
+div.menu:hover .choice { display: initial; }
+div.menu:hover .header  { display: none; }
+
+
+.vertical-rl {
+    writing-mode: vertical-rl;  
+}
+
+
+
+.noselect {
+    -webkit-user-select: none;  /* Safari */        
+    -moz-user-select: none;     /* Firefox */
+    -ms-user-select: none;      /* IE10+/Edge */
+    user-select: none;          /* Standard */
+}
+
+.pointer { cursor: pointer; }
+
+html,body {
+    padding: 0;
+    margin: 0;
+    width: 100%;
+    font-family: georgia;
+    height: auto;
+}
+
+.footer {
+    position: fixed;
+    bottom: 0;
+    z-index: 3;
+}
+
+.topic-bar {
+    justify-content: space-between;
+    position: static;
+}
+
+.topic-subbar {
+    position: static;
+    display: inline-block;
+    height: 1.5em;
+    background: #aaddff;
+}
+
+.topic-word:hover {
+    background: #ccffff;   
+}
+
+a, a:hover {
+    text-decoration: none;
+    color: black;
+}
+
+.hover:hover {
+    cursor: pointer;
+    background: lightgray;   
+}
+
+
+.vertical-align {
+    display: flex;
+    align-items: center;
+}
+
+
+.container:hover {
+    background: #eeffff;
+    object-fit: fill;
+}
+
+.row-header:hover {
+    background: #ccffff;   
+}
+
+

@@ -1,0 +1,185 @@
+.choice > a {
+    color: black;
+    text-decoration: none; 
+}
+.choice > a:hover { 
+    color: lightblue;
+}
+
+div.menu {
+    z-index: 10;
+    position: fixed;
+    left: 3%;
+    top: 50%;
+    transform: translateY(-50%) rotate(180deg);
+}
+
+.choice { display: none }
+div.menu:hover { height: 100%; }
+div.menu:hover .choice { display: initial; }
+div.menu:hover .header  { display: none; }
+
+
+.vertical-rl {
+    writing-mode: vertical-rl;  
+}
+
+html, body {
+    position: fixed;
+    overflow: scroll;
+    padding: 0;
+    margin: 0;
+    width: 100%;
+    font-family: georgia;
+    height: auto;
+    height: 100%;
+
+    max-width: 100%;
+}
+
+
+.p-3 {
+    padding: 3%  5%;
+    margin: 0;
+}
+
+.p-1 {
+    padding: 1% 5%;
+    margin: 0;
+}
+
+.p-0 {
+    padding: 0% 5%;
+    margin: 0;
+}
+
+.fixed {
+    position: fixed;
+}
+
+.absolute {
+    position: absolute;
+}
+
+.pos-right {
+    right: 0;
+    padding-right: 7%;
+}
+
+.pos-left {
+    left: 0;
+}
+
+.text-center {
+    text-align: center;
+}
+
+.text-right {
+    text-align: right;
+}
+
+.inline-block {
+    display: inline-block;
+
+}
+
+.pointer {
+    cursor: pointer;
+}
+
+
+
+input {
+    font-family: georgia;
+    font-size: 100%;
+}
+
+.search {
+    padding: 1vh 2.5vw;
+    margin-top: 3vh;
+    border-radius: 0.5em 0.5em;
+    border: solid thin lightgray;
+    width: 10vw;
+    z-index: 0;
+    transition: 0.2s;
+}
+
+.search:focus {
+    width: 15vw;
+}
+
+.search ~ .hits { 
+    max-height: 0;
+    width: 15vw;
+    transition: 0.2s;
+    text-align: left;
+    overflow: scroll;
+    background: rgba(255,255,255, 0.8);
+    border: solid thin rgba(0, 0 , 0, 0);
+    z-index: -1;
+
+}
+
+.search:focus ~ .hits {
+    max-height: 80vh;
+    display: block;
+    width: 20vw;
+    border: solid thin rgba(0, 0 , 0, 0.1);
+}
+
+.hit {
+    width: 15vw;
+    padding: 1vh 2.5vw;
+    cursor: pointer;
+    color: black;
+}
+
+.hit:hover {
+    background: rgba(220, 250, 250, 0.8);
+}
+
+.button {
+    width: 14%;
+    padding: 2vh;
+    margin: 2vh 1%;
+    border-radius: 0.5em 0.5em;
+    border: solid thin lightblue;
+    font-family: georgia;
+    font-size: 90%;
+    outline: none;
+}
+
+.button:hover {
+    background: lightblue;
+}
+
+.border {
+    border: solid thin;
+}
+
+#chart { height: 60vh; }
+
+.shown {
+    text-align: left;
+    display: inline-block;
+    width: 50%;
+    padding: 3% 15%;
+    margin: 3% 0;
+}
+
+.no-dec, .no-dec:hover {
+    text-decoration: none;
+    color: black;
+}
+
+.collection {
+    text-align: right;
+    padding: 12vh 0;
+}
+
+
+.white {
+    padding-bottom: 1vh;
+    background: rgba(255, 255, 255, 0.8);
+    z-index: -1;
+}
