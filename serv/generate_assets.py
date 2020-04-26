@@ -29,8 +29,8 @@ with open("data/data.p", "rb") as f:
     print("read", flush=True)
 
 g = src.generator.Generator(data)
-v = src.generator.Visualizer(data, "../assets/")
+v = src.generator.Visualizer(data, "../docs/")
 
-g.save("data/", "../assets/json/")
+g.save("data/", "../docs/json/")
 v.front("front/")
 v.wordcloud("cloud/")

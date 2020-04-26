@@ -1,5 +1,5 @@
 huge-data/*
-assets/node_modules/*
+docs/node_modules/*
 .DS_Store
 __pycache__/*
 analysis/data/*

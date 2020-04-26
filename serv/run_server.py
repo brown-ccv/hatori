@@ -23,7 +23,7 @@ if __name__ == "__main__":
             ids = []
         else:
             ids = sorted(set(int(i) for i in args.split(",")))
-        data = src.g.topics(ids, float(zval))
+        data = generator.topics(ids, float(zval))
         return json.dumps(data)
 
 
