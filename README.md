@@ -1,5 +1,5 @@
 
-This repository contains the code for the Hansard web app hosted at https://eight1911.github.io/hansard. The code is divided into two parts, the front-end of the web-app and the statistics compiler.
+This repository contains the code for the Hansard web app hosted at https://brown-ccv.github.io/hatori. The code is divided into two parts, the front-end of the web-app and the statistics compiler.
 
 
 ### The Front-End of The Webapp
