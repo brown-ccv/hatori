@@ -21,9 +21,9 @@
   },
   "dependencies": {
     "billboard": "^1.0.0",
-    "billboard.js": "^1.12.6",
+    "billboard.js": "^3.6.0",
     "browser-request": "^0.3.3",
-    "d3": "^5.16.0",
+    "d3": "^7.6.1",
     "lazyload": "^2.0.0-rc.2",
     "navigo": "^7.1.2",
     "node": "^13.13.0",
